@@ -115,6 +115,18 @@ public:
             ERR_error_string_n(ERR_get_error(), errbuf, MAX_ERRSTRING_SIZE);
             LOG_ERROR(0, -1, "Failed to initial TLS: ", errbuf);
         }
+        
+        SSL_CTX_set_min_proto_version(ctx, TLS1_1_VERSION);
+        SSL_CTX_set_max_proto_version(ctx, TLS1_3_VERSION);
+
+        SSL_CTX_set_options(ctx, SSL_OP_ENABLE_MIDDLEBOX_COMPAT); 
+
+        SSL_CTX_set_ciphersuites(ctx,
+            "TLS_AES_256_GCM_SHA384:"
+            "TLS_CHACHA20_POLY1305_SHA256:"
+            "TLS_AES_128_GCM_SHA256"
+        );
+
         SSL_CTX_set_ecdh_auto(ctx, 1);
     }
 
